@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      .letters {
+        resize: none;
+      }
+      .mletters {
+        overflow-y:scroll;
+        resize: none;
+      }
+      body {
+
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 4px;        
+      }
+      .button {
+    border: 0;
+    line-height: 2.5;
+    padding: 0 20px;
+    font-size: 1rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 10px;
+    background-color: rgba(220, 0, 0, 1);
+    background-image: linear-gradient(to top left,
+                                      rgba(0, 0, 0, .2),
+                                      rgba(0, 0, 0, .2) 30%,
+                                      rgba(0, 0, 0, 0));
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+                inset -2px -2px 3px rgba(0, 0, 0, .6);
+}
+.button1 {width: 240px;}
+.button2 {width: 240px;}
+.button3 {width: 240px;}
+.button:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+.button:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+                inset 2px 2px 3px rgba(0, 0, 0, .6);
+}
+textarea {
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px #999;
+    border: 2px solid rgba(220, 0, 0, 1);
+    border-radius: 5px;
+}
+h1{
+  text-shadow: 1px 1px 1px #000;
+  color: rgba(220, 0, 0, 1);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 25px;
+}
+    </style>
+  </head>
+  <body>
+    <h1><b>Наличие писем в заявках </b><br></h1>
+<button class = "button" id="btn">Проверить</button><br>
+<label for = "letters">Укажите список писем:</label><br>
+<textarea class = "letters" id="letters" name="letters" rows="20" cols="12">Список писем</textarea>
+<textarea class = "mletters" id="missing_letters" name="missing_letters" rows="20" cols="13">Здесь будут не внесённые письма</textarea>
+<script>
+document.getElementById("btn").addEventListener("click", doStuff);
+let q;
+function doStuff(){
+  let a = GetListLetters();
+  google.script.run.withSuccessHandler(q = data => { document.getElementById("missing_letters").value =(data)}).SearchNotLetters(a);
+}
+
+ function GetListLetters()
+{
+    let textarea = document.getElementById('letters');
+    let textareaValue = textarea.value;
+    let arr = textareaValue.split('\n'); 
+    return arr; 
+}
+</script>
+<h1><b>Навигация</b><br></h1>
+<table>
+<tr><td><label for = "letters">№ заявки:</label><br></tr></td>
+<tr><td><input class = "numberOrder" id="numberOrder" name="numberOrder" type="number" min = 1 max = 10000></input></tr></td>
+<tr><td><button class = "button button1" id="goToRowbtn"                     >    Перейти    </button><br></tr></td>
+<tr><td><button class = "button button2" id="goToEndbtn"                     > Перейти в конец </button><br></tr></td>
+<tr><td><button class = "button button3" type = submit id="goToFirstNoClosed">Первая незакрытая</button><br></tr></td>
+<table>
+<script>
+document.getElementById("goToRowbtn").addEventListener("click", doStuff);
+document.getElementById("goToEndbtn").addEventListener("click", doStuff2);
+document.getElementById("goToFirstNoClosed").addEventListener("click", doStuff3);
+
+
+function doStuff(){
+  google.script.run.withSuccessHandler().goToRow(GetNumberOrder());
+}
+
+function doStuff2(){
+  google.script.run.withSuccessHandler().goToEnd();
+}
+
+function doStuff3(){
+  google.script.run.withSuccessHandler().goToFirstFalseOrder();
+}
+
+function GetNumberOrder()
+{
+    let textareaValue = document.getElementById('numberOrder').value;
+    return textareaValue; 
+}
+
+let input = document.getElementById("numberOrder");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("goToRowbtn").click();
+  }
+});
+
+</script>
+  </body>
+</html>
