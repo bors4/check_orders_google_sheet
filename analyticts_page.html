@@ -1,125 +1,211 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+
+<head>
+    <title>Страница навигации по заявкам</title>
     <base target="_top">
     <style>
-      .letters {
-        resize: none;
-      }
-      .mletters {
-        overflow-y:scroll;
-        resize: none;
-      }
-      body {
+        .letters {
+            resize: none;
+        }
 
-        background-size: cover;
-        background-repeat: no-repeat;
-        border-radius: 4px;        
-      }
-      .button {
-    border: 0;
-    line-height: 2.5;
-    padding: 0 20px;
-    font-size: 1rem;
-    text-align: center;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 10px;
-    background-color: rgba(220, 0, 0, 1);
-    background-image: linear-gradient(to top left,
-                                      rgba(0, 0, 0, .2),
-                                      rgba(0, 0, 0, .2) 30%,
-                                      rgba(0, 0, 0, 0));
-    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+        .mletters {
+            overflow-y: scroll;
+            resize: none;
+        }
+
+        body {
+
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 3px;
+
+        }
+
+        .button {
+            border: 0;
+            line-height: 2.5;
+            padding: 0 20px;
+            font-size: 1rem;
+            text-align: center;
+            color: #fff;
+            text-shadow: 1px 1px 1px #000;
+            border-radius: 10px;
+            background-color: rgba(220, 0, 0, 1);
+            background-image: linear-gradient(to top left,
+                    rgba(0, 0, 0, .2),
+                    rgba(0, 0, 0, .2) 30%,
+                    rgba(0, 0, 0, 0));
+            box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
                 inset -2px -2px 3px rgba(0, 0, 0, .6);
-}
-.button1 {width: 240px;}
-.button2 {width: 240px;}
-.button3 {width: 240px;}
-.button:hover {
-    background-color: rgba(255, 0, 0, 1);
-}
+        }
 
-.button:active {
-    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+        .button1 {
+            width: 150px;
+            text-align: left;
+        }
+
+        .button2 {
+            width: 240px;
+        }
+
+        .button3 {
+            width: 240px;
+        }
+
+        .button:hover {
+            background-color: rgba(255, 0, 0, 1);
+        }
+
+        .button:active {
+            box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
                 inset 2px 2px 3px rgba(0, 0, 0, .6);
-}
-textarea {
-    border: 1px solid #ccc;
-    box-shadow: 2px 2px 2px #999;
-    border: 2px solid rgba(220, 0, 0, 1);
-    border-radius: 5px;
-}
-h1{
-  text-shadow: 1px 1px 1px #000;
-  color: rgba(220, 0, 0, 1);
-  font-family: "Times New Roman", Times, serif;
-  font-size: 25px;
-}
+        }
+
+        textarea {
+            box-shadow: 2px 2px 2px #999;
+            border: 2px solid rgba(220, 0, 0, 1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-shadow: 1px 1px 1px #000;
+            color: rgba(220, 0, 0, 1);
+            font-family: "Times New Roman", Times, serif;
+            font-size: 25px;
+        }
+
+        summary {
+            padding: 0rem;
+            display: block;
+            background: #444;
+            color: white;
+            padding-left: 2.2rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        details {
+            max-width: 240px;
+            margin-top: 0px;
+            background: white;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open]>summary:before {
+            transform: rotate(90deg);
+        }
+
+        summary:before {
+            content: '';
+            border-width: .4rem;
+            border-style: solid;
+            border-color: transparent transparent transparent #fff;
+            position: absolute;
+            top: .3rem;
+            left: 1rem;
+            transform: rotate(0);
+            transform-origin: .2rem 50%;
+            transition: .5s transform ease;
+        }
     </style>
-  </head>
-  <body>
-    <h1><b>Наличие писем в заявках </b><br></h1>
-<button class = "button" id="btn">Проверить</button><br>
-<label for = "letters">Укажите список писем:</label><br>
-<textarea class = "letters" id="letters" name="letters" rows="20" cols="12">Список писем</textarea>
-<textarea class = "mletters" id="missing_letters" name="missing_letters" rows="20" cols="13">Здесь будут не внесённые письма</textarea>
-<script>
-document.getElementById("btn").addEventListener("click", doStuff);
-let q;
-function doStuff(){
-  let a = GetListLetters();
-  google.script.run.withSuccessHandler(q = data => { document.getElementById("missing_letters").value =(data)}).SearchNotLetters(a);
-}
+</head>
 
- function GetListLetters()
-{
-    let textarea = document.getElementById('letters');
-    let textareaValue = textarea.value;
-    let arr = textareaValue.split('\n'); 
-    return arr; 
-}
-</script>
-<h1><b>Навигация</b><br></h1>
-<table>
-<tr><td><label for = "letters">№ заявки:</label><br></tr></td>
-<tr><td><input class = "numberOrder" id="numberOrder" name="numberOrder" type="number" min = 1 max = 10000></input></tr></td>
-<tr><td><button class = "button button1" id="goToRowbtn"                     >    Перейти    </button><br></tr></td>
-<tr><td><button class = "button button2" id="goToEndbtn"                     > Перейти в конец </button><br></tr></td>
-<tr><td><button class = "button button3" type = submit id="goToFirstNoClosed">Первая незакрытая</button><br></tr></td>
-<table>
-<script>
-document.getElementById("goToRowbtn").addEventListener("click", doStuff);
-document.getElementById("goToEndbtn").addEventListener("click", doStuff2);
-document.getElementById("goToFirstNoClosed").addEventListener("click", doStuff3);
+<body>
+    <div id="search_panel">
+        <br>
+        <h1><b>Наличие писем в заявках </b></h1></br>
+        <label for="letters" style="color: rgba(220, 0, 0, 1); font-style: italic;"><b>Укажите список писем:</b></label><br>
+        <textarea class="letters" id="letters" name="letters" rows="20" cols="12">Список писем</textarea>
+        <textarea class="mletters" id="missing_letters" name="missing_letters" rows="20"
+            cols="13">Здесь будут не внесённые письма</textarea>
+        <div id="exec_search">
+            <b><button class="button" id="btn"><span>Проверить</span></button><br>
+                <script>
+                    document.getElementById("btn").addEventListener("click", doStuff);
+                    let q;
+                    function doStuff() {
+                        let a = GetListLetters();
 
+                        google.script.run.withSuccessHandler(q = data => { document.getElementById("missing_letters").value = (data) }).SearchNotLetters(a);
+                    }
 
-function doStuff(){
-  google.script.run.withSuccessHandler().goToRow(GetNumberOrder());
-}
+                    function GetListLetters() {
+                        let textarea = document.getElementById('letters');
+                        let textareaValue = textarea.value;
+                        let arr = textareaValue.split('\n');
+                        return arr;
+                    }
+                </script>
+        </div>
+    </div>
+    <div id="navigation">
+        <h1><b>Навигация</b><br></h1>
+        <div>
+            <button class="button button1" id="goToRowbtn">Перейти к:</button>
 
-function doStuff2(){
-  google.script.run.withSuccessHandler().goToEnd();
-}
+            <input width="10" class="numberOrder" id="numberOrder" name="numberOrder" type="number" min=1 max=10000
+                value="1"></input>
 
-function doStuff3(){
-  google.script.run.withSuccessHandler().goToFirstFalseOrder();
-}
+        </div>
+        <div>
+            <button class="button button2" id="goToEndbtn"> Перейти в конец </button>
+        </div>
+        <div>
+            <button class="button button3" type=submit id="goToFirstNoClosed">Первая незакрытая</button>
+        </div>
+        <script>
+            document.getElementById("goToRowbtn").addEventListener("click", doStuff);
+            document.getElementById("goToEndbtn").addEventListener("click", doStuff2);
+            document.getElementById("goToFirstNoClosed").addEventListener("click", doStuff3);
 
-function GetNumberOrder()
-{
-    let textareaValue = document.getElementById('numberOrder').value;
-    return textareaValue; 
-}
+            function doStuff() {
+                google.script.run.withSuccessHandler().goToRow(GetNumberOrder());
+            }
 
-let input = document.getElementById("numberOrder");
-input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("goToRowbtn").click();
-  }
-});
+            function doStuff2() {
+                google.script.run.withSuccessHandler().goToEnd();
+            }
 
-</script>
-  </body>
+            function doStuff3() {
+                google.script.run.withSuccessHandler().goToFirstFalseOrder();
+            }
+
+            function GetNumberOrder() {
+                let textareaValue = document.getElementById('numberOrder').value;
+                return textareaValue;
+            }
+
+            let input = document.getElementById("numberOrder");
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("goToRowbtn").click();
+                }
+            });
+
+        </script>
+    </div>
+    <div>
+        <br>
+        <details>
+            <summary>Не работает поиск?</summary>
+            <ol>
+                <li>
+                    Необходимо проверить есть ли права на доступ к книге.
+                </li>
+                <li>
+                    <p>Если произведён вход с нескольких учётных записей одновременно, то выйти из всех и войти только с
+                        той, у которой есть права доступа к книге.</p>
+                </li>
+            </ol>
+        </details>
+        </br>
+    </div>
+
+</body>
+
 </html>
